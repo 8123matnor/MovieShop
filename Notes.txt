@@ -1,0 +1,236 @@
+M Model => C# classes that you use for your Views
+V View
+C => Controller
+
+
+ Entity User => class 
+ Id
+ FirstName
+ LastName
+ Password
+ Salt
+ Email
+
+
+ Account Info in the View UserInfoModel class
+ FirstName
+ LastName
+ 
+ Repositories => Data Access Logic
+ 
+ Services => 
+			Business Logic => 
+			Create Shipping Label
+			Calcualte Tax
+			Register User with Password Hashing
+			Send Confirmation Email
+			
+			Purchase Movie 
+				Call the PurcahseRepository Class (Save the Purchase info in Purchase table)
+				Validate Credit Card => Paypal 3rd party validation
+				InvalidCreditCardException
+				Send the Email to User about Purchase Conformation
+ 
+ 
+ Interfaces => 
+
+
+
+Http Methods
+
+GET		=>
+POST	=>
+PUT		=> 	
+DELETE	=>
+
+
+Code Maintenable
+Unit Testing
+Change the implemtation at run time
+
+Reusable => Class Library Project
+
+// Hard Dependency
+// * Loose * 
+
+Dependency Injection 
+
+
+tightly coupled code
+
+code through interfaces rather than classes
+
+class A {
+
+   interface B
+  
+}
+
+Class C {
+
+interface B
+}
+
+
+SHippingCOntroller {
+
+public IactionResult () {
+
+ICarrieService
+}
+
+}
+
+
+
+interface ICarrieService {
+
+ CreateShippingLabel();
+ 
+}
+
+FedexService : ICarrieService {
+ CreateShippingLabel() {
+ return "fdsfdsfdsf"
+ }
+}
+
+UPSService : ICarrieService {
+ CreateShippingLabel() {
+ return "fdsfdsfdsf"
+ }
+}
+
+USPSService : ICarrieService {
+ CreateShippingLabel() {
+ return "fdsfdsfdsf"
+ }
+}
+
+
+
+loosley coulpled code
+
+
+
+new features, 
+Fixing exisrtng bugs
+Code Maintenable  
+
+Design Pattern
+
+method(int x,  IMovieService service);
+method(5, new MovieService() );
+
+IMovieService service = new MovieRepository();
+
+COnstructor Injection
+
+
+HomeController controller = new HomeController(new Logger(), new MovieService() );
+controller.Index();
+
+Entity Framework
+
+
+1.  ADO.NET Lower Level API's for accessing databases
+	write lots of code 
+	Manual and repeated Code
+
+2.  ORM => Object Ralational Mapping
+	micro ORM Dapper => StackOverflow (ASP.NET Core)
+	Database already
+		
+3.	Entity Framework Microsoft
+	Full ORM
+	Create the database with just C# Code
+	Can access the database without single line of SQL Code, using C# and LINQ
+	Save/Update/Delete
+
+EF Core
+
+Step 1. Create Entity class that you need with all the properties that matches with columns of the table
+	 2. Download the EF Core Packages from Nuget in the solution Microsoft.EntityFrameworkCore.SqlServer
+	 3. Establish the connection string (appsettings.json) of where you want to create the database
+	 4. Create DbContext -> Represents your Database
+		and DbSet => Represents your Tables properties
+	 5. Inject COnnection String in to DbContext from your Startup Project, using DI
+	 6. Use EF Core Migrations to start creating database using Microsoft.EntityFrameworkCore.Design
+	 7. If Design package does not work use Microsoft.EntityFrameworkCore.Tools, install it in MVC (startup project)
+	 8. Make sure open Tools-> NugetPackage Manager Console
+	 9. Add your very first Migration with the command called Add-Migration InitialMigration
+	 10. Once you create the Migration make sure you check the migration file and then to apply that migration to the
+		database use command called update-database
+	 11. To make any changes to database always first change the entity and add new migration, never change directly
+		 in the database. Always go through the code
+	 12. 1. Data Annotations way
+		 2.	Fluent API way (much more powerful and usually preferred appraoach in larger projects)
+		 You can combine both approaches in a project
+
+
+
+ Server -> IIS - Windows based
+ Linux -> Ngix
+ 
+ ASP.NET allocate a thread to start executing the request
+
+ Limited number of threads T100 -> T1 to T100 -> Thread pool
+
+ 1000 genre 1 => page size 30
+ 
+ 1000/30 => 33+ 10 moies => 34 pages
+
+  Page 1 1-30
+  Page 2  offset (Pagenumber -1)*PageSize Take Fetch Page size =   31-60
+				(2-1)*30 = skip 30 take 30
+
+				Offet 30 fetch next 30 rows
+				skip(30) and Take(30)
+
+
+Authentication => Identity 
+
+public (annonymous)	=> Home Page, Movie Details, Cast Details, Privacy, Login and Register
+
+Authenticated  => BUY (check id user id loged in), redirect to login page
+			   => Review
+			   => Favorite
+			   => View Profile, Edit Profile
+			   => Purchases => list of movies user purchased
+			   => Favorites => list of movies user favorited
+
+Authorization (Admin Role)	   
+			   => Create Movie, Only User with Role of Admin
+			   => Create Genre
+			   => Create Cast
+			
+
+
+Register	=> 
+			Step 1 => Check if the email exist in the database or not
+				 If No => 
+						Store the info in the User table
+			
+1. Plain Text => BIG NO
+2. Encyprtion => NO
+3. Hashing => Better
+4. Hashing + Salt
+
+Registration
+
+U1  abc@abc.com   [ABc123!! + skfgbdskfbdsfb] => Hashing 1 => vsfvsgfsgsgsddsfdsfsdfsdfdsfsdfsd
+U2  xyx@bbs.com   [ABc123!! + vfdsfdsfsdffsf] => Hashing 1 => fsdfdsfdsfdsfdsfdsffghnjhfhdfbvxcv  
+U3  sdf#ddd.com	  [ABc123!! + dssadsadsadadd] => Hashing 1 => e56t5egfdbfdghfdgbxfcbcbcgbgcbgcbbd
+
+Login
+
+U1  abc@abc.com  [ABc123!! + skfgbdskfbdsfb] =>  Hashing 1 vsfvsgfsgsgsddsfdsfsdfsdfdsfsdfsd == vsfvsgfsgsgsddsfdsfsdfsdfdsfsdfsd
+
+Model Binding in ASP.NET
+
+
+
+
+
+
+
