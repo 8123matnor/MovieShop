@@ -26,4 +26,10 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Views\Cast\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Cast\" />
+  </ItemGroup>
 </Project>
