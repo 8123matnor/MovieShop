@@ -1,21 +1,28 @@
 ﻿@model ApplicationCore.Models.CastDetailsModel
 
+<h3> CAST DETAILS</h3>
 <div class="container">
-    <h1> CAST DETAILS</h1>
-
-    <img src=@Model.ProfilePath class="img-Cast" alt=@Model.Name style="display:inline" />
-    <h6> @Model.Name</h6>
-
-    <h3>MOVIES</h3>
-    <ul class="list-group list-group-flush">
-        @foreach (var movie in Model.Movies)
-        {
-            <li class="list-group-item">
-                <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
-                    <p style="display:inline; color:black; margin-left:40px">@movie.Title</p>
-                </a>
-            </li>
-        }
-
-    </ul>
+    <div class="row">
+        <div class="col-6">
+            <h4> @Model.Name</h4>
+            <img src=@Model.ProfilePath class="img-Cast" alt=@Model.Name style="display:inline; width:40%;height:40%;" />
+        </div>
+        <div class="col-6">
+            <h3>MOVIES</h3>
+            <ul class="list-group list-group-flush">
+                @foreach (var movie in Model.Movies)
+                {
+                    <li class="list-group-item">
+                        <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
+                            <p style="display:inline; color:black; margin-left:40px">@movie.Title</p>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
 </div>
+
+
+
+
