@@ -1,14 +1,26 @@
 ﻿using System;
 using ApplicationCore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MovieShopMVC.Infra;
 
 namespace MovieShopMVC.Controllers
 {
+    [Authorize]
     public class UserController: Controller
     {
+        private readonly ICurrentUser _currentUser;
+
+        public UserController(ICurrentUser currentUser)
+        {
+            _currentUser = currentUser;
+        }
         [HttpGet]
         public async Task<IActionResult> Purchases()
         {
+            //get all movies purchased by user, user id
+            //httpcontezt.user.claims and then call teh database and get the information to the view
+            var userId = _currentUser.UserId;
             return View();
         }
 

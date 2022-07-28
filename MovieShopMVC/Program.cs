@@ -5,6 +5,8 @@ using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MovieShopMVC.Infra;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -19,6 +21,10 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICastRepository, CastRepository>();
 builder.Services.AddScoped<ICastService, CastService>();
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+
+//HTTP Context
+builder.Services.AddHttpContextAccessor();
 
 
 // read the connection string from appsettings.json and inject connection string in to DbContext
@@ -66,3 +72,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+ 

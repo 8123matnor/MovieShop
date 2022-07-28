@@ -30,8 +30,12 @@
   <ItemGroup>
     <None Remove="Views\Cast\" />
     <None Remove="Microsoft.AspNetCore.Cryptography.KeyDerivation" />
+    <None Remove="Infra\" />
+    <None Remove="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Cast\" />
+    <Folder Include="Infra\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
 </Project>
