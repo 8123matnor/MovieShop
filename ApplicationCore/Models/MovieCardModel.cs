@@ -8,8 +8,14 @@ namespace ApplicationCore.Models
 {
     public class MovieCardModel
     {
+        public MovieCardModel()
+        {
+            Genres = new List<GenreModel>();
+        }
         public int Id { get; set; }
         public string Title{ get; set; }
         public string PosterUrl { get; set; }
+
+        public List<GenreModel> Genres { get; set; }
     }
 }

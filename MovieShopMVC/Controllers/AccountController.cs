@@ -1,5 +1,8 @@
-﻿using ApplicationCore.Models;
+﻿using System.Security.Claims;
+using ApplicationCore.Models;
 using ApplicationCore.ServiceContracts;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -40,11 +43,31 @@ namespace MovieShopMVC.Controllers
         public async Task<IActionResult> Login(UserLoginModel model)
         {
             var user = await _accountService.ValidateUser(model);
-            if (user == false)
+            if (user == null)
             {
-                ModelState.AddModelError( "" , "Password is invalid");
                 return View(model);
             }
+
+            //after successful auth, create claims
+            //need user id, email, firstname, lastname
+            //
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Surname, user.LastName),
+                new Claim(ClaimTypes.GivenName, user.FirstName),
+                new Claim("language", "english")
+            };
+
+            //identity object
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            //create cookie with some expiration time
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+
+
             return LocalRedirect("~/");
         }
     }
