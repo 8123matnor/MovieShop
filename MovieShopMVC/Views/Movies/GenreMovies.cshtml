@@ -1,0 +1,76 @@
+﻿@using ApplicationCore.Models
+@model PagedResultSet<MovieCardModel>
+
+@if (Model.TotalPages == 0)
+{
+    <h1>No Movies in Genre</h1>
+}
+else
+{
+    <div class="rounded">
+        <div class="container-fluid">
+            <div class="row">
+                @foreach (var movieCard in Model?.Data)
+                {
+                    <div class="col-xl-2 col-sm-4 col-lg-3 col-6">
+                        <partial name="_MovieCard" model="@movieCard" />
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    
+    @*<a asp-action="GenreMovies" asp-route-page="@(Model.PageIndex-1)" class="btn btn-primary @prevDisabled"> Previous</a>*@
+    @*<a asp-action="GenreMovies" asp-route-page="@(Model.PageIndex+1)" class="btn btn-primary @nextDisabled"> Next</a>*@
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+
+            @if (Model.PageIndex == 1)
+            {
+                @*<li class="page-item"><a class="page-link @prevDisabled" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex-1)">@(Model.PageIndex-1)</a></li>*@
+                <li class="page-item active" aria-current="page"><a class="page-link" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex)">@(Model.PageIndex)</a></li>
+                <li class="page-item"><a class="page-link @nextDisabled" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex+1)">@(Model.PageIndex+1)</a></li>
+                <li class="page-item">
+                    <a class="page-link @nextDisabled" aria-label="Next" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex+1)">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+            else if (Model.PageIndex > Model.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link @prevDisabled" aria-label="Previous" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex-1)">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link @prevDisabled" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex-1)">@(Model.PageIndex-1)</a></li>
+                <li class="page-item active" aria-current="page"><a class="page-link" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex)">@(Model.PageIndex)</a></li>
+
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link @prevDisabled" aria-label="Previous" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex-1)">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link @prevDisabled" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex-1)">@(Model.PageIndex-1)</a></li>
+                <li class="page-item active" aria-current="page"><a class="page-link" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex)">@(Model.PageIndex)</a></li>
+                <li class="page-item"><a class="page-link @nextDisabled" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex+1)">@(Model.PageIndex+1)</a></li>
+                <li class="page-item">
+                    <a class="page-link @nextDisabled" aria-label="Next" asp-action="GenreMovies" asp-route-page="@(Model.PageIndex+1)">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+
+        </ul>
+    </nav>
+}
+
+

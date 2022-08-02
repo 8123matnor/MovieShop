@@ -22,10 +22,11 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICastRepository, CastRepository>();
 builder.Services.AddScoped<ICastService, CastService>();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
-
 //HTTP Context
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddTransient<IGenreRepository, GenreRepository>();
+builder.Services.AddTransient<GenreService>();
 
 // read the connection string from appsettings.json and inject connection string in to DbContext
 builder.Services.AddDbContext<MovieShopDbContext>(options =>

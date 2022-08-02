@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using ApplicationCore.ServiceContracts
+@inject IGenreService GenreService
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -20,33 +24,26 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left:20px">
-                                GENRE
+                <div class="collapse navbar-collapse" id="navbarNavDropdown" style="margin-left:20px">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown" style="float:left">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Genres
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                                
-                                @*@foreach (var genres in Model.Genres)
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                                @foreach (var genre in await GenreService.GetAllGenres())
                                 {
-                                    <a class="dropdown-item" href="#">@genres.Names</a>
-                                }*@
-                            </div>
+                                    <li><a asp-action="GenreMovies" asp-controller="Movies" class="dropdown-item" asp-route-id="@genre.Id"> @genre.Name</a></li>
+                                }
+                            </ul>
                         </li>
-                        @*<li class="nav-item">
-            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </li>*@
+
                     </ul>
                 </div>
+                <partial name="_LoginInfoPartial" />
             </div>
-        </nav>
+</nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
