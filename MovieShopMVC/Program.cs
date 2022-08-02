@@ -5,7 +5,10 @@ using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MovieShopMVC.Infra;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +52,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // Constructor Injection 99%
 // Method and Property Injection
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -65,7 +70,6 @@ app.UseStaticFiles();
 app.UseRouting();
 
 //Middlewares
-app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

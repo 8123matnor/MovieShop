@@ -57,7 +57,18 @@ namespace Infrastructure.Services
 
         }
 
-        private string GetRandomSalt()
+        public async Task<bool> CheckEmail(UserEmailModel model)
+        {
+            // step 1: chek if the email exists in database
+            var user = await _userRepository.GetUserByEmail(model.Email);
+            if (user != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+            private string GetRandomSalt()
         {
             var randomBytes = new byte[128 / 8];
             using (var rng = RandomNumberGenerator.Create())

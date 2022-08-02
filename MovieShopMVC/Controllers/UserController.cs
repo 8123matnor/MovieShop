@@ -7,6 +7,7 @@ using MovieShopMVC.Infra;
 namespace MovieShopMVC.Controllers
 {
     [Authorize]
+
     public class UserController: Controller
     {
         private readonly ICurrentUser _currentUser;
