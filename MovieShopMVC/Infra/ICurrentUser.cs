@@ -8,7 +8,6 @@
         string Email { get; }
         string ProfilePictureUrl { get; }
         string FullName { get; }
-
     }
     
 

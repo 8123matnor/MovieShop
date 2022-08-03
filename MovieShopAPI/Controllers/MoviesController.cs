@@ -21,6 +21,18 @@ namespace MovieShopAPI.Controllers
         }
 
         [HttpGet]
+        [Route("{id:int}")]
+        public async Task<IActionResult> GetMovie(int id)
+        {
+            var movie = await _movieService.GetMovieDetails(id);
+            if (movie == null)
+            {
+                return NotFound(new { errorMessage = $"No Movie Found for {id}" });
+            }
+            return Ok(movie);
+        }
+
+        [HttpGet]
         [Route("top-grossing")]
         public async Task<IActionResult> GetTopRevenueMovies()
         {
@@ -34,17 +46,7 @@ namespace MovieShopAPI.Controllers
             return Ok(movies);
         }
 
-        [HttpGet]
-        [Route("{id:int}")]
-        public async Task<IActionResult> GetMovie(int id)
-        {
-            var movie = await _movieService.GetMovieDetails(id);
-            if(movie == null)
-            {
-                return NotFound(new { errorMessage = $"No Movie Found for {id}" });
-            }
-            return Ok(movie);
-        }
+       
 
         [HttpGet]
         [Route("genre/{genreId:int}")]

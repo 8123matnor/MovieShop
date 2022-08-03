@@ -1,59 +1,114 @@
 ﻿using System;
+using System.Diagnostics;
 using ApplicationCore.Models;
+using ApplicationCore.ServiceContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieShopMVC.Infra;
+using MovieShopMVC.Models;
 
 namespace MovieShopMVC.Controllers
 {
     [Authorize]
-
-    public class UserController: Controller
+    public class UserController : Controller
     {
-        private readonly ICurrentUser _currentUser;
+        private readonly IUserService _userService;
+        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(ICurrentUser currentUser)
+        public UserController(IUserService userService, IHttpContextAccessor contextAccessor, ILogger<UserController> logger)
         {
-            _currentUser = currentUser;
-        }
-        [HttpGet]
-        public async Task<IActionResult> Purchases()
-        {
-            //get all movies purchased by user, user id
-            //httpcontezt.user.claims and then call teh database and get the information to the view
-            var userId = _currentUser.UserId;
-            return View();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Favorites()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> EditProfile()
-        {
-            return View();
+            _userService = userService;
+            _contextAccessor = contextAccessor;
+            _logger = logger;
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProfile(UserEditModel model)
+        public async Task<IActionResult> Review(ReviewRequestModel model)
         {
-            return View();
+            ICurrentUser currentUser = new CurrentUser(_contextAccessor);
+            if (currentUser.IsAuthenticated == false)
+            {
+                return LocalRedirect("~/Account/Login");
+            }
+            await _userService.AddMovieReview(model);
+            return LocalRedirect("~/Movies/Details/" + model.MovieId);
         }
 
         [HttpPost]
-        public async Task<IActionResult> BuyMovie()
+        public async Task<IActionResult> Purchase(PurchaseRequestModel model, int userId)
         {
-            return View();
+            ICurrentUser currentUser = new CurrentUser(_contextAccessor);
+            if (currentUser.IsAuthenticated == false)
+            {
+                return LocalRedirect("~/Account/Login");
+            }
+            await _userService.PurchaseMovie(model, userId);
+            return LocalRedirect("~/Movies/Details/" + model.MovieId);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Purchases(int userId)
+        {
+            var purchases = await _userService.GetAllPurchasesForUser(userId);
+            return View(purchases);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Favorites(int userId)
+        {
+            var favorites = await _userService.GetAllFavoritesForUser(userId);
+            return View(favorites);
+        }
 
         [HttpPost]
-        public async Task<IActionResult> FavoriteMovie()
+        public async Task<IActionResult> AddMovieToFavorites(FavoriteRequestModel model)
         {
-            return View();
+            if (await _userService.FavoriteExists(model.UserId, model.MovieId))
+            {
+                throw new Exception("Favorite already exists!");
+            }
+            await _userService.AddFavorite(model);
+            return LocalRedirect("~/Movies/Details/" + model.MovieId);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveMovieFromFavorites(FavoriteRequestModel model)
+        {
+            if (await _userService.FavoriteExists(model.UserId, model.MovieId) == false)
+            {
+                throw new Exception("Cannot find a favorite to delete!");
+            }
+            await _userService.RemoveFavorite(model);
+            return LocalRedirect("~/Movies/Details/" + model.MovieId);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPurchaseDetails(int userId, int movieId)
+        {
+            var details = await _userService.GetPurchaseDetails(userId, movieId);
+            return PartialView("_PurchaseDetails", details);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateReview(ReviewRequestModel model)
+        {
+            var updatedReview = await _userService.UpdateMovieReview(model);
+            return LocalRedirect("~/Movies/Details/" + model.MovieId);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteReview(ReviewRequestModel model)
+        {
+            await _userService.DeleteMovieReview(model.UserId, model.MovieId);
+            return LocalRedirect("~/Movies/Details/" + model.MovieId);
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

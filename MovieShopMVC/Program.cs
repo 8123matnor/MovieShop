@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MovieShopMVC.Infra;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Infrastructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,16 +21,20 @@ builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<ICastService, CastService>();
+builder.Services.AddScoped<ICastRepository, CastRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<ICastRepository, CastRepository>();
-builder.Services.AddScoped<ICastService, CastService>();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
+builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 //HTTP Context
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<IGenreRepository, GenreRepository>();
 builder.Services.AddTransient<GenreService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 // read the connection string from appsettings.json and inject connection string in to DbContext
 builder.Services.AddDbContext<MovieShopDbContext>(options =>

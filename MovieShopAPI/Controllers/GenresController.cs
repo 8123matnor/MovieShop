@@ -22,15 +22,15 @@ namespace MovieShopAPI.Controllers
         }
 
         [HttpGet]
-        [Route("genre")]
-        public async Task<bool> GetGenres()
+        [Route("")]
+        public async Task<IActionResult> GetGenres()
         {
             var genres = await _genreService.GetAllGenres();
             if (genres == null)
             {
-                return false;
+                return NotFound(new { errorMessage = $"No Genre Found" });
             }
-            return true;
+            return Ok(genres);
         }
     }
 }

@@ -31,5 +31,16 @@ namespace Infrastructure.Repositories
             var user = await _movieShopDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
             return user;
         }
+
+        public async Task<User> GetUserById(int userid)
+        {
+            var user = await _movieShopDbContext.Users.FirstOrDefaultAsync(u => u.Id == userid);
+            return user;
+        }
+
+        public Task<User> GetUserId(int userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

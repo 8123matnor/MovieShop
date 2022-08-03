@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MovieShopMVC.Infra;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,12 +17,12 @@ namespace MovieShopAPI.Controllers
 
     public class UserController : ControllerBase
     {
-        //private readonly ICurrentUser _currentUser;
+        private readonly ICurrentUser _currentUser;
 
-        //public UserController(ICurrentUser currentUser)
-        //{
-        //    _currentUser = currentUser;
-        //}
+        public UserController(ICurrentUser currentUser)
+        {
+            _currentUser = currentUser;
+        }
         [HttpGet]
         [Route("purchases")]
         public async Task<IActionResult> GetMoviesPurchasedByUser()
