@@ -64,7 +64,8 @@ namespace MovieShopAPI.Controllers
                 return Ok(new { token = jwtToken });
             }
 
-            return Unauthorized(new { errorMessage = "Please check email and password" });
+            throw new UnauthorizedAccessException("Please check email and passowrd");
+            //return Unauthorized(new { errorMessage = "Please check email and password" });
         }
 
         private string CreateJwtToken(UserInfoResponseModel user)

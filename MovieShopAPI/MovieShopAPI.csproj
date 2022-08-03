@@ -20,9 +20,11 @@
     <None Remove="Microsoft.AspNetCore.Mvc" />
     <None Remove="System.IdentityModel.Tokens.Jwt" />
     <None Remove="Microsoft.IdentityModel.Tokens" />
+    <None Remove="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj">

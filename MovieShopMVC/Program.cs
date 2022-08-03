@@ -70,6 +70,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 //Middlewares
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
